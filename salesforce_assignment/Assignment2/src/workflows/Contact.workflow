@@ -14,6 +14,33 @@
         <senderType>CurrentUser</senderType>
         <template>unfiled$public/Notify_Teacher</template>
     </alerts>
+    <alerts>
+        <fullName>Send_Birthday_Email</fullName>
+        <description>Send Birthday Email</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Birthday_Mail_Template</template>
+    </alerts>
+    <rules>
+        <fullName>Birthday Email</fullName>
+        <actions>
+            <name>Send_Birthday_Email</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <description>Send an email to the contact two days before the contact&apos;s birthday.</description>
+        <formula>AND(NOT( ISBLANK( Birthdate ) ), NOT( ISBLANK(  Email ) ))</formula>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <offsetFromField>Contact.Birthdate</offsetFromField>
+            <timeLength>2</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
     <rules>
         <fullName>Send Experience Email</fullName>
         <actions>
