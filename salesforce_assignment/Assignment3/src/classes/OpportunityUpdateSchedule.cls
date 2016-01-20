@@ -2,7 +2,7 @@ public class OpportunityUpdateSchedule implements Schedulable{
  
  public static void execute(SchedulableContext sc){       
           String[] toAddresses = new String[]{};
-         for(Opportunity ol : [Select Id,ownerID,Owner.email from Opportunity where LastModifiedDate = LAST_N_DAYS:1]){
+         for(Opportunity ol : [Select Id,ownerID,Owner.email from Opportunity where LastModifiedDate = LAST_N_DAYS:30]){
              toAddresses.add(ol.Owner.email);
      }
      if(toAddresses.size()>0){
