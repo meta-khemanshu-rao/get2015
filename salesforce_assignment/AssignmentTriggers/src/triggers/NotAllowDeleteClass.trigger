@@ -1,11 +1,17 @@
 trigger NotAllowDeleteClass on Class__c (before delete) {
-   for(Class__c cls : Trigger.old)
-   {
-       List<Student__c> stdList = [SELECT Id FROM Student__c WHERE Class__c=:cls.Id AND Sex__c = 'Female'];
-       System.debug(stdList);
-       if(stdList.size()>1)
-       {
-           cls.addError('Class having one or more female student is not allowed to Delete');
-       }
-   }
+    List<Student__c> stdList = [SELECT Id,Class__r.id FROM Student__c WHERE Sex__c = 'Female'];
+    Integer count=0;
+    for(Class__c Classes : Trigger.oldMap.values())
+     {   for(Student__c stduents:stdList)
+        {  if(stduents.Class__r.id==classes.id)
+            {
+             count++;
+            }
+         }
+       if(count>1)
+        {
+         Classes.addError('Not allowed to delete class having more than one female student');
+        }
+       count=0;
+    }
 }
