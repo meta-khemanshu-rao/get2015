@@ -1,0 +1,20 @@
+<apex:page controller="AccountFilter">
+   <apex:form >
+       <apex:pageblock >
+           <apex:pageBlockSection >
+              Billing City <apex:inputText value="{!billingCityString}" id="BillingCity" />
+              Billing State <apex:inputText value="{!billingStateString}" id="BillingState"/>
+              Billing Country <apex:inputText value="{!billingCountryString}" id="BillingCountry"/>
+           <apex:commandButton action="{!FilterAccountList}" value="Search" id="theSearch"/>
+           </apex:pageBlockSection>
+           <apex:outputPanel rendered="{!IF(createAccountList!=null, true, false)}">
+               <apex:pageBlocktable value="{!createAccountList}" var="records"> 
+                   <apex:column value="{!records.name}" headerValue="Name"/>
+                   <apex:column value="{!records.BillingCity}" headerValue="Billing City"/>
+                   <apex:column value="{!records.BillingState}" headerValue="Billing State"/>
+                   <apex:column value="{!records.BillingCountry}" headerValue="Billing Country"/>
+               </apex:pageBlocktable>
+           </apex:outputPanel>
+       </apex:pageblock>
+   </apex:form>
+</apex:page>

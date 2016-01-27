@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>AccountDetailWithPagination</members>
+        <members>AccountFilter</members>
+        <members>AttachPdf</members>
+        <members>EmployeeJson</members>
+        <members>ManageClassController</members>
+        <members>myControllerExtension</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>AccountFilterPage</members>
+        <members>AccountFilterWithPagination</members>
+        <members>BillToContactPage</members>
+        <members>ClassView</members>
+        <members>JsonOutputScreen</members>
+        <members>ManageClassPage</members>
+        <members>RecordTypePage</members>
+        <members>StudentDetailPdf</members>
+        <members>StudentView</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Contact</members>
+        <name>CustomObject</name>
+    </types>
+    <version>35.0</version>
+</Package>
