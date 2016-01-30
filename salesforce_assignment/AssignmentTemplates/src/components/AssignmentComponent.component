@@ -2,11 +2,11 @@
     <apex:form >
         <apex:panelGrid columns="2" id="theGrid" border="2" cellspacing="0" cellpadding="5">
             
-            <apex:commandLink action="{!sortData}" value="Account Name{!IF(sortColumn=='Name',IF(sortType='ASC','▼','▲'),'')}" id="cmdSort">
+            <apex:commandLink action="{!sortData}" value="Account Name{!IF(sortType='ASC','▼','▲')}" id="cmdSort" rerender="theGrid" >
                 <apex:param value="Name" name="column" assignTo="{!sortColumn}" ></apex:param>
             </apex:commandLink>
             
-            <apex:commandLink action="{!sortData}" value="Billing City{!IF(sortColumn=='BillingCity',IF(sortType='ASC','▼','▲'),'')}">
+            <apex:commandLink action="{!sortData}" value="Billing City{!IF(sortType='ASC','▼','▲')}" rerender="theGrid" >
                 <apex:param value="BillingCity" name="column" assignTo="{!sortColumn}" ></apex:param>
             </apex:commandLink>
             

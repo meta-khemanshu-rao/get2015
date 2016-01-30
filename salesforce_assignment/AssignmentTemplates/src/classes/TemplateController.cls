@@ -8,6 +8,18 @@ public class TemplateController {
     private String sortType = 'ASC';
     private String sortField = 'Name';
     
+    public String sortColumn {
+        get { return sortField; }
+        
+        set {
+            if (value == sortField)
+                sortType = (sortType == 'ASC')? 'DESC' : 'ASC';
+            else
+                sortType = 'ASC';
+            sortField = value;
+        }
+    }
+
     Public TemplateController() {
         fetch();
     }
@@ -51,19 +63,7 @@ public class TemplateController {
         else
             return false;
     }
-    
-    public String sortColumn {
-        get { return sortField; }
         
-        set {
-            if (value == sortField)
-                sortType = (sortType == 'ASC')? 'DESC' : 'ASC';
-            else
-                sortType = 'ASC';
-            sortField = value;
-        }
-    }
-    
     public String getSortType() {
         if (sortColumn == null || sortColumn == '')
             return 'ASC';
@@ -73,10 +73,6 @@ public class TemplateController {
     
     public void setSortType(String value) {  
         sortType = value;
-    }
-    
-    public List<Account> getAccounts() {
-        return accountList;
     }
     
     public PageReference sortData() {
