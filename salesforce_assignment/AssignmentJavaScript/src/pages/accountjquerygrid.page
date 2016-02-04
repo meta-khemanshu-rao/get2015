@@ -1,41 +1,47 @@
-<apex:page standardController="Account">
+<apex:page standardController="Account" showHeader="false" sidebar="false">
+    <script src="{!$Resource.jQuery}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.12.1/css/ui.jqgrid.min.css "/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.12.1/js/i18n/grid.locale-de.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.12.1/js/jquery.jqgrid.min.js"></script>
     <script src="/soap/ajax/11.0/connection.js"></script>
     <script src="/soap/ajax/11.0/apex.js"></script>
+    <style type="text/css">
+        .ui-jqgrid tr.jqgrow td {
+            height:auto;
+            vertical-align:text-top;
+            padding:6px 6px;
+            text-overflow:ellipsis;
+        }
+    </style>
     <script type="text/javascript">
-    queryResult= null; 
-    var flag=false;
-    var table ="<table id='tab' border =' 1 solid black '></table>";    
-    window.onload=function(){  
+        window.onload=function() {
+        document.getElementById("tab").style = "";
         sforce.connection.sessionId = "{!$Api.Session_ID}";
-        queryResult= sforce.connection.query("select Id,Name,Owner.name,Phone from Account order by isActive__C desc,name"); 
-        document.write(table);
-        accountDetail(); 
-    };
-    function accountDetail()
-    {   document.getElementById('tab').innerHTML = "";
-     var str = "<tr><th>ID</th><th><a href ='#' onclick = 'accountDetail()'>Name</th><th>owner Name</th><th>Phone</th></tr>";
-     try {   
-         var count = 0;
-         if(queryResult != null && queryResult.size >0){ 
-             var crecords = queryResult.getArray("records");
-             if(!flag)
-             {  flag=true;
-              for (var i=0; i<crecords.length; i++) { 
-                  str = str + "<tr><td  width = '50px' style = 'text-overflow:ellipsis'>"+crecords[i].Id+"</td><td>"+crecords[i].Name+"</td><td>"+crecords[i].Owner.Name+"</td><td>"+crecords[i].Phone+"</td></tr>";
-              }
-             }
-             else
-             { flag=false;
-              for (var i=crecords.length-1;i>=0; i--) { 
-                  str = str + '<tr><td>'+crecords[i].Id+'</td><td>'+crecords[i].Name+'</td><td>'+crecords[i].Owner.Name+'</td><td>'+crecords[i].Phone+'</td></tr>';
-              }
-             }
-         }
-         document.getElementById('tab').innerHTML=str;
-     }
-     catch(error){
-         alert(error);
-     }
+        try {
+            var gridData;
+            var obj;
+            queryResult = sforce.connection.query("select Id,Name,Owner.name,Phone,(select Id from Contacts) from Account order by isActive__C desc,name"); 
+            var crecords = queryResult.getArray("records");
+            $("#tab").jqGrid("GridUnload");
+            gridData = JSON.stringify(crecords);
+            alert(gridData);
+            obj = JSON.parse(gridData);    
+            jQuery("#tab").jqGrid({
+                data: crecords,
+                datatype: 'local',
+                colNames:['Id','Name','Manager','Phone','Number Contact'],
+                colModel:[
+                    {name:'Id',index:'Id', width:100,sortable:false},
+                    {name:'Name',index:'Name', width:100},
+                    {name:'Owner.Name',index:'Owner.Name', width:100,sortable:false},
+                    {name:'Phone',index:'Phone', width:100,sortable:false},
+                    {name:'Contacts.size',index:'Number Contact', width:100,sortable:false}],
+            });   
+        }catch(error) {
+            alert(error); 
+        }	
     }
+    
     </script>
+    <table id='tab'></table>
 </apex:page>
