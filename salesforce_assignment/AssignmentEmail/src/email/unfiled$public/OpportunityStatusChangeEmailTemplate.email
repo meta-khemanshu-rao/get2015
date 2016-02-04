@@ -1,0 +1,7 @@
+Hi {!Opportunity.OwnerFirstName},
+
+Your Opportunity status has been changed to {!Opportunity.StageName}, by {!Opportunity.LastModifiedBy} on {!Opportunity.LastModifiedDate}.
+
+
+Thanks & Regards
+{!Opportunity.Manager__c}
