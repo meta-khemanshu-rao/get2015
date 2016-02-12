@@ -1,0 +1,53 @@
+<apex:page sidebar="false" showHeader="false" controller="StudentSiteController">
+    <script type="text/javascript">
+    function getStudentDetail() {
+        // student Id which has been selected
+        var selectedStudentID = document.getElementById('{!$Component.Frm.PB.PBS.SelectedStudentName}').value;
+        // Java Script function to invoke the Remote Action
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.StudentSiteController.getStudent}',selectedStudentID, 
+            function(result, event){
+                // Checking for the Status being True
+                if (event.status) {
+                    // setting the Value to the field
+                    document.getElementById("{!$Component.outputPB.outputPBS.firstName}").innerHTML = result.First_Name__c;
+                    document.getElementById("{!$Component.outputPB.outputPBS.lastName}").innerHTML = result.LastName__c;
+                    document.getElementById("{!$Component.outputPB.outputPBS.age}").innerHTML = result.Age__c;
+                } 
+                // If exception Redirect to the Page with Error
+                else if (event.type === 'exception') {
+                    document.getElementById("errorMessage").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } 
+            }, 
+            {escape: true}
+        );
+    }
+    </script>
+    <!--  To provide the Error -->
+    <apex:pageMessages id="errorMessage"></apex:pageMessages>
+    <apex:form id="Frm">
+        <apex:pageBlock id="PB">
+            
+            <!-- Page Block Section to  select the Student-->
+            <apex:pageBlockSection id="PBS">
+                <apex:selectList size="1" label="Select Student Name"
+                                 id="SelectedStudentName" onchange="getStudentDetail()">
+                    <apex:selectOptions value="{!selectList}"></apex:selectOptions>
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <!--  To Display the Output -->
+    <apex:pageBlock id="outputPB">
+        <!--  Page Block Section to Show the Details -->
+        <apex:pageBlockSection id="outputPBS">
+            <label>First Name</label>
+            <apex:outputText id="firstName" ></apex:outputText>
+            <label>Last Name</label>
+            <apex:outputText id="lastName" ></apex:outputText>
+            <label>Age</label>
+            <apex:outputText id="age" ></apex:outputText>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
